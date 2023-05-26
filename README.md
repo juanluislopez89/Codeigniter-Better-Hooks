@@ -49,14 +49,21 @@ $CI =& get_instance();
 $CI->load->library('betterhooks');
 
 // Add action
-$CI->betterhooks->add_action('after_main_menu_items_loaded', 'add_menu_item', 10);
+$CI->betterhooks->add_action('after_main_menu_items_loaded', 'add_my_menu_items', 10);
+$CI->betterhooks->add_action('after_main_menu_items_loaded', 'add_another_menu_item', 20);
 
 // Callback function to add new menu item
-function add_menu_item() {
+function add_my_menu_items() {
 	echo '
 	<li><a href="#">New menu item 1</a></li>
 	<li><a href="#">New menu item 2</a></li>
 	<li><a href="#">New menu item 3</a></li>';
+}
+
+// Callback function to add another new menu item
+function add_another_menu_item() {
+	echo '
+	<li><a href="#">Another new menu item 1</a></li>';
 }
 ```
 
@@ -76,8 +83,10 @@ This will result in:
 	<li><a href="#">Core Menu item 1</a></li>
 	<li><a href="#">Core Menu item 2</a></li>
 	<li><a href="#">Core Menu item 3</a></li>
-	<li><a href="#">New menu item 1</a></li>
+	<li><a href="#">Another new menu item 1</a></li>
 	<li><a href="#">New menu item 2</a></li>
+	<li><a href="#">New menu item 1</a></li>
 	<li><a href="#">New menu item 3</a></li>
 </ul>
 ```
+Note that the callback functions are executed in the order of priority, so that why 'Another new menu item 1' is displayed before 'New menu item 2'.

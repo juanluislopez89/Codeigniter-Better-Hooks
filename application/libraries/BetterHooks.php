@@ -23,9 +23,9 @@ class BetterHooks {
 
 	function do_action($action_tag, $params = []) {
 		if (isset($this->hooks->hooks[$action_tag])) {
-			//ordenamos los hooks por prioridad
-			usort($this->hooks->hooks[$action_tag], function($a, $b) {
-				return $a['priority'] - $b['priority'];
+			//ordenamos los hooks por prioridad de mayor a menor
+			usort($this->hooks->hooks[$action_tag], function($a, $b){
+				return $a['priority'] < $b['priority'];
 			});
 
 			//add params set in do_action to each hook
