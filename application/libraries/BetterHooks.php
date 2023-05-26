@@ -11,31 +11,31 @@ class BetterHooks {
 		//ini_set('display_errors', '1');
 	}
 
-	function add_action($action_name, $function_to_call, $priority = 10, $filepath = 'helpers', $filename = 'betterhooks_helper.php') {
-		$this->hooks->hooks[$action_name][] = array(
+	function add_action($action_tag, $callback, $priority = 10, $filepath = 'helpers', $filename = 'betterhooks_helper.php') {
+		$this->hooks->hooks[$action_tag][] = array(
 			'filepath' => $filepath,
 			'filename' => $filename,
 			'class'    => '',
-			'function' => $function_to_call,
+			'function' => $callback,
 			'priority' => $priority
 		);
 	}
 
-	function do_action($action_name, $params = []) {
-		if (isset($this->hooks->hooks[$action_name])) {
+	function do_action($action_tag, $params = []) {
+		if (isset($this->hooks->hooks[$action_tag])) {
 			//ordenamos los hooks por prioridad
-			usort($this->hooks->hooks[$action_name], function($a, $b) {
+			usort($this->hooks->hooks[$action_tag], function($a, $b) {
 				return $a['priority'] - $b['priority'];
 			});
 
 			//add params set in do_action to each hook
-			foreach ($this->hooks->hooks[$action_name] as $key => $hook) {
-				$this->hooks->hooks[$action_name][$key]['params'] = $params;
+			foreach ($this->hooks->hooks[$action_tag] as $key => $hook) {
+				$this->hooks->hooks[$action_tag][$key]['params'] = $params;
 			}
 
-			//print_r($this->hooks->hooks[$action_name]);
+			//print_r($this->hooks->hooks[$action_tag]);
 
-			$this->hooks->call_hook($action_name, $params);
+			$this->hooks->call_hook($action_tag, $params);
 
 		}
 	}
